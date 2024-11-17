@@ -14,7 +14,7 @@
         android:text="Voltage"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pressure_configuration_current_voltage" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_configuration_current_voltage" />
 
     <TextView
         android:id="@+id/textView8"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bleedButtonOverrideCheckbox" />
 
     <Button
-        android:id="@+id/pressure_configuration_dialog_close_button"
+        android:id="@+id/admin_configuration_dialog_close_button"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="100dp"
@@ -44,10 +44,10 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pressure_configuration_voltage_20" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_configuration_voltage_20" />
 
     <EditText
-        android:id="@+id/pressure_configuration_scale_factor"
+        android:id="@+id/admin_configuration_scale_factor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
-        android:id="@+id/pressure_configuration_voltage_100"
+        android:id="@+id/admin_configuration_voltage_100"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -74,7 +74,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
     <EditText
-        android:id="@+id/pressure_configuration_voltage_80"
+        android:id="@+id/admin_configuration_voltage_80"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -87,31 +87,31 @@
         app:layout_constraintTop_toTopOf="@+id/textView17" />
 
     <EditText
-        android:id="@+id/pressure_configuration_voltage_60"
+        android:id="@+id/admin_configuration_voltage_60"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
-        app:layout_constraintEnd_toEndOf="@+id/pressure_configuration_voltage_80"
-        app:layout_constraintStart_toStartOf="@+id/pressure_configuration_voltage_80"
+        app:layout_constraintEnd_toEndOf="@+id/admin_configuration_voltage_80"
+        app:layout_constraintStart_toStartOf="@+id/admin_configuration_voltage_80"
         app:layout_constraintTop_toTopOf="@+id/textView14" />
 
     <EditText
-        android:id="@+id/pressure_configuration_voltage_40"
+        android:id="@+id/admin_configuration_voltage_40"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/textView15"
-        app:layout_constraintEnd_toEndOf="@+id/pressure_configuration_voltage_60"
-        app:layout_constraintStart_toStartOf="@+id/pressure_configuration_voltage_60"
+        app:layout_constraintEnd_toEndOf="@+id/admin_configuration_voltage_60"
+        app:layout_constraintStart_toStartOf="@+id/admin_configuration_voltage_60"
         app:layout_constraintTop_toTopOf="@+id/textView15" />
 
     <EditText
-        android:id="@+id/pressure_configuration_voltage_20"
+        android:id="@+id/admin_configuration_voltage_20"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -119,8 +119,8 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView16"
-        app:layout_constraintEnd_toEndOf="@+id/pressure_configuration_voltage_40"
-        app:layout_constraintStart_toStartOf="@+id/pressure_configuration_voltage_40"
+        app:layout_constraintEnd_toEndOf="@+id/admin_configuration_voltage_40"
+        app:layout_constraintStart_toStartOf="@+id/admin_configuration_voltage_40"
         app:layout_constraintTop_toTopOf="@+id/textView16" />
 
     <TextView
@@ -144,13 +144,23 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/pressure_configuration_version"
+        android:id="@+id/admin_configuration_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/admin_configuration_version2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Build: has_status_text"
+        app:layout_constraintEnd_toStartOf="@+id/admin_configuration_version"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -164,7 +174,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView10" />
 
     <TextView
-        android:id="@+id/pressure_configuration_current_voltage"
+        android:id="@+id/admin_configuration_current_voltage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -172,7 +182,7 @@
         android:text="Current Voltage:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pressure_configuration_scale_factor" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_configuration_scale_factor" />
 
     <TextView
         android:id="@+id/textView13"
@@ -235,7 +245,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <WebView
-        android:id="@+id/pressure_configuration_webview_hidden"
+        android:id="@+id/admin_configuration_webview_hidden"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"

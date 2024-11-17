@@ -23,15 +23,12 @@ import com.example.arduinoproject.R;
 
 public class CorrectWifiDialog extends AppCompatActivity {
 
-    Button closeButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.correct_wifi_dialog);
-        closeButton = (Button)findViewById(R.id.correct_wifi_dialog_close_button);
+        Button closeButton = (Button)findViewById(R.id.correct_wifi_dialog_close_button);
         closeButton.setOnClickListener(this::closeButtonPressed);
-        Intent sentIntent = getIntent();
     }
 
     private void closeButtonPressed(View view) {

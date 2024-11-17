@@ -37,7 +37,6 @@ public class CircularButtonFragment extends Fragment {
     private boolean pressed = false;
 
     int lightIndigo;
-    int brightYellow;
     int indigo;
     int deepGray;
     int midGray;
@@ -83,7 +82,7 @@ public class CircularButtonFragment extends Fragment {
         }
     }
 
-    private int millisecondsToHoldFor = 2000;
+    private static final int millisecondsToHoldFor = 2000;
     private boolean cancelled = false;
     private long timeOfPress;
     private boolean circularButtonHoldCheck(View view, MotionEvent event) {

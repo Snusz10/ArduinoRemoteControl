@@ -35,8 +35,6 @@ public class AdminConfiguration extends AppCompatActivity {
 
     Button closeButton;
 
-    private boolean frameOpen = true;
-
     WebView webView;
 
     static public Float scaleFactor = 1.0f;
@@ -54,31 +52,31 @@ public class AdminConfiguration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pressure_configuration);
+        setContentView(R.layout.admin_configuration);
 
-        webView = findViewById(R.id.pressure_configuration_webview_hidden);
+        webView = findViewById(R.id.admin_configuration_webview_hidden);
 
-        TextView versionTextView = findViewById(R.id.pressure_configuration_version);
+        TextView versionTextView = findViewById(R.id.admin_configuration_version);
         versionTextView.setText("Version: " + MainActivity.version);
 
-        EditText editText = findViewById(R.id.pressure_configuration_scale_factor);
+        EditText editText = findViewById(R.id.admin_configuration_scale_factor);
         editText.setText(scaleFactor.toString());
 
-        EditText voltage100EditText = findViewById(R.id.pressure_configuration_voltage_100);
+        EditText voltage100EditText = findViewById(R.id.admin_configuration_voltage_100);
         voltage100EditText.setText(batteryVoltage100 == null ? null : batteryVoltage100.toString());
-        EditText voltage80EditText = findViewById(R.id.pressure_configuration_voltage_80);
+        EditText voltage80EditText = findViewById(R.id.admin_configuration_voltage_80);
         voltage80EditText.setText(batteryVoltage80 == null ? null : batteryVoltage80.toString());
-        EditText voltage60EditText = findViewById(R.id.pressure_configuration_voltage_60);
+        EditText voltage60EditText = findViewById(R.id.admin_configuration_voltage_60);
         voltage60EditText.setText(batteryVoltage60 == null ? null : batteryVoltage60.toString());
-        EditText voltage40EditText = findViewById(R.id.pressure_configuration_voltage_40);
+        EditText voltage40EditText = findViewById(R.id.admin_configuration_voltage_40);
         voltage40EditText.setText(batteryVoltage40 == null ? null : batteryVoltage40.toString());
-        EditText voltage20EditText = findViewById(R.id.pressure_configuration_voltage_20);
+        EditText voltage20EditText = findViewById(R.id.admin_configuration_voltage_20);
         voltage20EditText.setText(batteryVoltage20 == null ? null : batteryVoltage20.toString());
 
         CheckBox bleedButtonCheckbox = findViewById(R.id.bleedButtonOverrideCheckbox);
         bleedButtonCheckbox.setChecked(bleedButtonOverride);
 
-        TextView batteryVoltageTextView = findViewById(R.id.pressure_configuration_current_voltage);
+        TextView batteryVoltageTextView = findViewById(R.id.admin_configuration_current_voltage);
         batteryVoltageTextView.setText("Current Voltage: " + MainActivity.batteryVoltage.toString());
 
         textWatcher(editText, "scaleFactor");
@@ -100,7 +98,7 @@ public class AdminConfiguration extends AppCompatActivity {
             }
         });
 
-        closeButton = (Button) findViewById(R.id.pressure_configuration_dialog_close_button);
+        closeButton = (Button) findViewById(R.id.admin_configuration_dialog_close_button);
         closeButton.setOnClickListener(this::closeButtonPressed);
     }
 
@@ -149,7 +147,6 @@ public class AdminConfiguration extends AppCompatActivity {
     }
 
     private void closeButtonPressed(View view) {
-        frameOpen = false;
         finish();
     }
 }

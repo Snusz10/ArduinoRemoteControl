@@ -7,7 +7,6 @@
  * Version || Author || Date        || Comment
  * =================================================================================================
  * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
- *
  * =================================================================================================
 */
 
@@ -24,10 +23,8 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.drawable.PaintDrawable
-import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
-import com.example.arduinoproject.R
 
 class BatteryView constructor(context: Context) : View(context) {
     private var radius: Float = 0f

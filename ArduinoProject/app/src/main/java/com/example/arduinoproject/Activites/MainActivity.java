@@ -88,21 +88,6 @@ public class MainActivity extends AppCompatActivity {
     BatteryView batteryView;
     LinearLayout batteryLayout;
 
-    // update the wifi connection status whenever the phone switches or looses a wifi connection
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION .equals(action)) {
-                SupplicantState state = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
-                if (SupplicantState.isValidState(state)
-                        && state == SupplicantState.COMPLETED) {
-                }
-            }
-        }
-    };
-
     private Boolean connectedToArduino = false; // if the program is connected to the arduino or not
     public static final int backgroundImportInterval = 250; // the period of time the program takes in between sending signals
     private final int timeToDelayOverride = 10000; // the amount in milliseconds before the "override" text appears on a pin or ball status
@@ -112,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
     private final Float backSideTolerance = 80.0f; // the PSI that the backside pressure needs to be under before the release pin button lights up
 
     private boolean allowedToPing = true; // if the application is allowed to send signals to the arduino
-
-    // all of the battery boolean flags that will be used to set the battery life indicator
-    private boolean batteryStatus100 = false;
-    private boolean batteryStatus80 = false;
-    private boolean batteryStatus60 = false;
-    private boolean batteryStatus40 = false;
-    private boolean batteryStatus20 = false;
 
     // initialize any colours necessary
     int deepRed;
@@ -320,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         backSidePressureGauge = (PressureGaugeFragment) fm.findFragmentById(R.id.backSidePressureGaugeView);
     }
 
-    private int millisecondsToHoldFor = 5000;
+    private static final int millisecondsToHoldFor = 5000;
     private boolean cancelled = false;
     private long timeOfPress;
     View thisView;
@@ -445,13 +423,12 @@ public class MainActivity extends AppCompatActivity {
         }));
     }
 
-    // this conversion factor will be used to change the voltage into a pressure reading, it is a rough ESTIMATE
-    private Float conversionFactor = 1223f; // scales up the voltage reading to a pressure reading
-    private final Float correctionFactor = 0.27f; // the pressure transducers give off a voltage of 0.27 when they read 0 psi
+    // this function will be used to change the voltage into a pressure reading, it is a rough ESTIMATE
     private Float parsePressure(String info){
         Float myNum = Float.parseFloat(info);
         myNum = myNum * 1.4f; // corrects the voltage given by the arduino to its actual value
 
+        float correctionFactor = 0.27f; // the pressure transducers give off a voltage of 0.27 when they read 0 psi
         myNum = myNum - correctionFactor;
 
         if (myNum < 0){
@@ -460,6 +437,7 @@ public class MainActivity extends AppCompatActivity {
 
         myNum = myNum * AdminConfiguration.scaleFactor;
 
+        float conversionFactor = 1223f; // scales up the voltage reading to a pressure reading
         return (myNum) * conversionFactor;
     }
 
@@ -525,10 +503,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     prevPinInState = info;
                     if (info.equals("0")){
-                        System.out.println("pin in");
                         pinStatusInState();
                     }else{
-                        System.out.println("pin no longer in");
                         updatePinStatusAfterDelay();
                     }
                     break;
@@ -539,11 +515,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                     prevPinOutState = info;
                     if (info.equals("0")){
-                        System.out.println("pin out");
                         pinStatusOutState();
                     }else{
                         updatePinStatusAfterDelay();
-                        System.out.println("pin no longer out");
                     }
                     break;
                 case "BallHomeStatus":
@@ -677,7 +651,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String stringToSend = "http://192.168.4.1/" + signalNumber++ + signalString;
-        //System.out.println("signal = " + signalString);
         webView.loadUrl(stringToSend);
     }
 
@@ -726,6 +699,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
+        super.onDestroy();
         sendDefaultSignals();
         Runnable destroy = new Runnable() {
             @Override
