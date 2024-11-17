@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.github.anastr.speedviewlib.SpeedView
+        android:id="@+id/speedView"
+        app:sv_unit="psi"
+        app:sv_minSpeed="0"
+        app:sv_maxSpeed="1000"
+        app:sv_withTremble="false"
+        app:sv_speedTextFormat="INTEGER"
+        app:sv_withIndicatorLight="true"
+        app:sv_indicatorLightColor="@color/peach"
+        app:sv_tickNumber="5"
+        app:sv_centerCircleColor="@color/black"
+        app:sv_startDegree="160"
+        app:sv_endDegree="380"
+        app:sv_backgroundCircleColor="@color/lightGray"
+        app:sv_indicator="KiteIndicator"
+        app:sv_indicatorWidth="12dp"
+        app:sv_indicatorColor="@color/midIndigo"
+        app:sv_markColor="@color/black"
+        app:sv_markHeight="5dp"
+        app:sv_marksNumber="9"
+        app:sv_unitSpeedInterval="4dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,14 @@
+	1. Plug in the Android device into a PC using a USB cable.
+	2. Go into the notifications tab on the phone and tap on the "charging this device via USB - tap for more options" pop-up
+	3. Change the USB allowances to File transfer
+	4. (Alternative to the above. Copy the apk file mentioned below onto a USB and transfer onto the android device that way)
+	5. Copy and paste the Core Controller.apk file from the computer into the 'download' folder on the android device
+	6. Locate the 'files' application on the phone (usually swiping up or down from the home screen will allow you to search for applications) - open this application
+	7. Open up the download folder and tap on the Core Controller.apk file
+	8. It may ask for permissions to allow your phone to install applications directly from the download folder, if it does, give it permission to
+	9. It should install/update/ask to install an application called Core Controller, allow this.
+
+The app is now installed! To make a shortcut on the home screen again swipe up or down from the home screen and search for Core Controller. 
+Long press and drag to the location that you want the shortcut to be placed in.
+
+To double check which version of the application is currently running (and to configure the application) Tap and hold the left pressure gauge for about 10 seconds. A dialog will appear where you can change various values and view the current build of the application.
