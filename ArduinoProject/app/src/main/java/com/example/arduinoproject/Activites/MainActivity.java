@@ -20,14 +20,12 @@ import androidx.fragment.app.FragmentManager;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -62,11 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     // get all of the status text fragments and name them
     FragmentManager fm;
-    StatusTextFragment pinStatusTextView;
     StatusTextFragment connectedStatusTextView;
-    StatusTextFragment ballStatusTextView;
-    StatusTextFragment wiperStatusTextView;
-    FragmentContainerView wiperStatusWholeFragment;
 
     // get the circular button fragments and name them
     CircularButtonFragment pinCircularButton;
@@ -185,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume(){
         chargeButton = findViewById(R.id.chargeButton);
         bleedButton = findViewById(R.id.bleedButton);
-        wiperStatusWholeFragment = findViewById(R.id.wiperStatusTextView);
         webView = findViewById(R.id.web_view_hidden);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
@@ -221,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         initColours();
         initComponentColours();
         initFragments();
-        initStatusTexts();
+        updateConnectedStatusText();
         initCircularButtons();
         initPressureGauges();
         registerActionListeners();
@@ -283,10 +276,7 @@ public class MainActivity extends AppCompatActivity {
     private void initFragments(){
         // get all of the status text fragments and name them
         fm = getSupportFragmentManager();
-        pinStatusTextView = (StatusTextFragment) fm.findFragmentById(R.id.pinStatusTextView);
         connectedStatusTextView = (StatusTextFragment) fm.findFragmentById(R.id.connectedStatusTextView);
-        ballStatusTextView = (StatusTextFragment) fm.findFragmentById(R.id.ballStatusTextView);
-        wiperStatusTextView = (StatusTextFragment) fm.findFragmentById(R.id.wiperStatusTextView);
 
         // get the circular button fragments and name them
         pinCircularButton = (CircularButtonFragment) fm.findFragmentById(R.id.pinCircularButton);
@@ -442,11 +432,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int incomingMessageNumber = -1;
-    private String prevWiperState = "0";
-    private String prevPinInState = "0";
-    private String prevPinOutState = "1";
-    private String prevBallHomeState = "0";
-    private String prevBallLaunchedState = "1";
     private void handleMessage(String message){
         String[] individualMessages = message.split("~");
         for (int i = 0; i < individualMessages.length; i++){
@@ -483,66 +468,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case "Connected":
                     connectedToArduino = info.equals("T");
-                    break;
-                case "WiperStatus":
-                    if (info.equals(prevWiperState)){
-                        // the status is the same as it was last time, dont do anything
-                        break;
-                    }
-                    prevWiperState = info;
-                    if (info.equals("0")){
-                        wiperStatusAwayState();
-                    }else{
-                        wiperStatusHomeState();
-                    }
-                    break;
-                case "PinInStatus":
-                    if (info.equals(prevPinInState)){
-                        // the status is the same as it was last time, dont do anything
-                        break;
-                    }
-                    prevPinInState = info;
-                    if (info.equals("0")){
-                        pinStatusInState();
-                    }else{
-                        updatePinStatusAfterDelay();
-                    }
-                    break;
-                case "PinOutStatus":
-                    if (info.equals(prevPinOutState)){
-                        // the status is the same as it was last time, dont do anything
-                        break;
-                    }
-                    prevPinOutState = info;
-                    if (info.equals("0")){
-                        pinStatusOutState();
-                    }else{
-                        updatePinStatusAfterDelay();
-                    }
-                    break;
-                case "BallHomeStatus":
-                    if (info.equals(prevBallHomeState)){
-                        // the status is the same as it was last time, dont do anything
-                        break;
-                    }
-                    prevBallHomeState = info;
-                    if (info.equals("0")){
-                        ballStatusHomeState();
-                    }else{
-                        updateBallStatusAfterDelay();
-                    }
-                    break;
-                case "BallLaunchedStatus":
-                    if (info.equals(prevBallLaunchedState)){
-                        // the status is the same as it was last time, dont do anything
-                        break;
-                    }
-                    prevBallLaunchedState = info;
-                    if (info.equals("0")){
-                        ballStatusLaunchedState();
-                    }else{
-                        updateBallStatusAfterDelay();
-                    }
                     break;
             }
         }
@@ -598,34 +523,6 @@ public class MainActivity extends AppCompatActivity {
     private void createBackgroundImportCheck(){
         // this function has a line of code that will recurse itself every X milliseconds
         webView.postDelayed(getMessageResponse, backgroundImportInterval);
-    }
-
-    private void updatePinStatusAfterDelay(){
-        Handler handler = new Handler();
-        Runnable updateToOverride = new Runnable() {
-            @Override
-            public void run() {
-                // no data is being read in for either pin
-                if (prevPinInState.equals("1") && prevPinOutState.equals("1")){
-                    pinStatusOverrideState();
-                }
-            }
-        };
-        handler.postDelayed(updateToOverride, timeToDelayOverride);
-    }
-
-    private void updateBallStatusAfterDelay(){
-        Handler handler = new Handler();
-        Runnable updateToOverride = new Runnable() {
-            @Override
-            public void run() {
-                // no data is being read in for either ball state
-                if (prevBallHomeState.equals("1") && prevBallLaunchedState.equals("1")){
-                    ballStatusOverrideState();
-                }
-            }
-        };
-        handler.postDelayed(updateToOverride, timeToDelayOverride);
     }
 
     // the string that is being returned is the response from the arduino
@@ -737,56 +634,7 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void pinStatusInState(){
-        pinStatusTextView.changeBackgroundColor(midIndigo, lightIndigo);
-        pinStatusTextView.setTextColor(black);
-        pinStatusTextView.setText("In");
-    }
-
-    private void pinStatusOverrideState(){
-        pinStatusTextView.changeBackgroundColor(deepRed, lightRed);
-        pinStatusTextView.setTextColor(black);
-        pinStatusTextView.setText("Sensor Failed");
-    }
-
     private boolean ballCircularButtonCanBeEnabled = false;
-    private void pinStatusOutState(){
-        pinStatusTextView.changeBackgroundColor(darkIndigo, deepIndigo);
-        pinStatusTextView.setTextColor(midGray);
-        pinStatusTextView.setText("Out");
-    }
-
-    private void ballStatusHomeState(){
-        ballStatusTextView.changeBackgroundColor(midIndigo, lightIndigo);
-        ballStatusTextView.setTextColor(black);
-        ballStatusTextView.setText("Home");
-    }
-
-    private void ballStatusOverrideState(){
-        ballStatusTextView.changeBackgroundColor(deepRed, lightRed);
-        ballStatusTextView.setTextColor(black);
-        ballStatusTextView.setText("Override");
-    }
-
-    private void ballStatusLaunchedState(){
-        ballStatusTextView.changeBackgroundColor(darkIndigo, deepIndigo);
-        ballStatusTextView.setTextColor(midGray);
-        ballStatusTextView.setText("Launched");
-    }
-
-    private void stopSignal(String signal){
-        bannedSignals.add(signal);
-        if (signalsToSend.containsKey(signal)){
-            signalsToSend.replace(signal, "false");
-        }else{
-            signalsToSend.put(signal, "false");
-        }
-
-    }
-
-    private void allowSignal(String signal){
-        bannedSignals.remove(signal);
-    }
 
     private void updateConnectedStatusText() {
         // if the phone is not connected to the correct wifi signal, display it
@@ -824,28 +672,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }));
-    }
-
-    private void wiperStatusHomeState(){
-        wiperStatusWholeFragment.setVisibility(View.GONE);
-        allowSignal("sendPin");
-        allowSignal("sendBall");
-    }
-
-    private void wiperStatusAwayState(){
-        wiperStatusWholeFragment.setVisibility(View.VISIBLE);
-        wiperStatusTextView.changeBackgroundColor(deepPurple, lightIndigo);
-        wiperStatusTextView.setText("Wiper Away");
-        stopSignal("sendPin");
-        stopSignal("sendBall");
-        sendSignal("bleed", "false");
-    }
-
-    private void initStatusTexts(){
-        pinStatusInState();
-        ballStatusHomeState();
-        updateConnectedStatusText();
-        wiperStatusHomeState();
     }
 
     private void initCircularButtons(){

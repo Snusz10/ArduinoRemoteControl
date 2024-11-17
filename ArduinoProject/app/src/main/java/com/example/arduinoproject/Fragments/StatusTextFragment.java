@@ -1,14 +1,3 @@
-/**
- * Description: A fragment that will visually display the status of the pin or ball
- *
- * Changelog:
- * Version || Author || Date        || Comment
- * =================================================================================================
- * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
- *
- * =================================================================================================
- */
-
 package com.example.arduinoproject.Fragments;
 
 import androidx.annotation.RequiresApi;
