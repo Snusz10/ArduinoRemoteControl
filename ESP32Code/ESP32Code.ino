@@ -1,3 +1,13 @@
+/**
+ * Description: Parses and outputs data to and from the java application to acctuate the electrical components of the drilling rig
+ *
+ * Changelog:
+ * Version || Author || Date        || Comment
+ * =================================================================================================
+ * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
+ * =================================================================================================
+ */
+
 #include <WiFi.h>
 #include <HTTPClient.h>
 
@@ -5,21 +15,16 @@
 #define BLEED_PIN 27
 #define RELEASE_PIN_OUT 14
 #define RELEASE_BALL_OUT 12
-// #define PIN_IN_STATUS 32
-// #define PIN_OUT_STATUS 33
-// #define BALL_HOME_STATUS 22
-// #define BALL_LAUNCHED_STATUS 23
-// #define WIPER_STATUS 25
 #define BACKSIDE_PRESSURE 35
 #define BOTTLE_PRESSURE 34
 
-#define BATTERY_LEVEL 32
+#define PIN_IN_STATUS 32
+#define PIN_OUT_STATUS 33
+#define BALL_HOME_STATUS 22
+#define BALL_LAUNCHED_STATUS 23
+#define WIPER_STATUS 25
 
-// #define BATTERY100 21
-// #define BATTERY80 19
-// #define BATTERY60 18
-// #define BATTERY40 17
-// #define BATTERY20 16
+#define BATTERY_LEVEL 13
 
 
 // WiFi Definitions
@@ -56,8 +61,6 @@ void setup() {
   Serial.begin(115200);
 
   // set-up for all of the different pins that are to be used //TODO add more pins
-  //pinMode(BUILTIN_LED, OUTPUT);
-  //digitalWrite(BUILTIN_LED, LOW);
   pinMode(CHARGE_PIN, OUTPUT);
   digitalWrite(CHARGE_PIN, LOW);
   pinMode(BLEED_PIN, OUTPUT);
@@ -69,18 +72,14 @@ void setup() {
   pinMode(BACKSIDE_PRESSURE, INPUT);
   pinMode(BOTTLE_PRESSURE, INPUT);
 
-  pinMode(BATTERY_LEVEL, INPUT);
+  
+  pinMode(PIN_IN_STATUS, INPUT_PULLUP);
+  pinMode(PIN_OUT_STATUS, INPUT_PULLUP);
+  pinMode(BALL_HOME_STATUS, INPUT_PULLUP);
+  pinMode(BALL_LAUNCHED_STATUS, INPUT_PULLUP);
+  pinMode(WIPER_STATUS, INPUT_PULLUP);
 
-  // pinMode(BATTERY100, INPUT);
-  // pinMode(BATTERY80, INPUT);
-  // pinMode(BATTERY60, INPUT);
-  // pinMode(BATTERY40, INPUT);
-  // pinMode(BATTERY20, INPUT);
-  // pinMode(PIN_IN_STATUS, INPUT_PULLUP);
-  // pinMode(PIN_OUT_STATUS, INPUT_PULLUP);
-  // pinMode(BALL_HOME_STATUS, INPUT_PULLUP);
-  // pinMode(BALL_LAUNCHED_STATUS, INPUT_PULLUP);
-  // pinMode(WIPER_STATUS, INPUT_PULLUP);
+  pinMode(BATTERY_LEVEL, INPUT);
 
   // Create my own wifi signal
   Serial.print("Setting AP (Access Point)…");
@@ -95,7 +94,6 @@ void setup() {
 
 int getIncomingMessageNumber(){
   char *headerCopy = new char[16];
-  //Serial.println("First part of header = " + header.substring(0,15));
 
   strcpy(headerCopy, header.substring(0,15).c_str());
   
@@ -135,7 +133,6 @@ void voltagesToDefault(){
 }
 
 void processMessageRecieved(WiFiClient client) {
-  //Serial.println(header);
   // if the message recieved by the client has not changed over the last message, do not process it, set the charge and bleed pins to their default setting (off)
   if (!newMessageCheck()){
     voltagesToDefault();
@@ -144,50 +141,36 @@ void processMessageRecieved(WiFiClient client) {
 
   // recieve messages given by the andriod application
   if (lineIs("builtin-true")) {
-    //Serial.println("builtin off");
     digitalWrite(BUILTIN_LED, HIGH);
 
   }if (lineIs("builtin-false")) {
-    //Serial.println("builtin on");
     digitalWrite(BUILTIN_LED, LOW);
 
   }if(lineIs("charge-true")) {
-    //Serial.println("charging (Pin " + String(CHARGE_PIN) + ")");
     digitalWrite(CHARGE_PIN, HIGH);
 
   }if(lineIs("charge-false")){
-    //Serial.println("Stopped charging (Pin " + String(CHARGE_PIN) + ")");
     digitalWrite(CHARGE_PIN, LOW);
 
   }if(lineIs("bleed-true")) {
-    //Serial.println("bleeding (Pin " + String(BLEED_PIN) + ")");
     digitalWrite(BLEED_PIN, HIGH);
 
   }if(lineIs("bleed-false")){
-    //Serial.println("Stopped bleeding (Pin " + String(BLEED_PIN) + ")");
     digitalWrite(BLEED_PIN, LOW);
 
   }if(lineIs("sendPin-true")) {
-    //Serial.println("Releasing pin (Pin " + String(RELEASE_PIN_OUT) + ")");
     digitalWrite(RELEASE_PIN_OUT, HIGH);
 
   }if(lineIs("sendPin-false")){
-    //Serial.println("No longer trying to release pin (Pin " + String(RELEASE_PIN_OUT) + ")");
     digitalWrite(RELEASE_PIN_OUT, LOW);
 
   }if(lineIs("sendBall-true")) {
-    //Serial.println("Releasing ball (Pin " + String(RELEASE_BALL_OUT) + ")");
     digitalWrite(RELEASE_BALL_OUT, HIGH);
 
   }if(lineIs("sendBall-false")){
-    //Serial.println("No longer trying to release ball (Pin " + String(RELEASE_BALL_OUT) + ")");
     digitalWrite(RELEASE_BALL_OUT, LOW);
-  
-  }if(lineIs("connected?")) {
-    //Serial.println("connected!!!");
   }
 
-  // send a response to any message that isn't "ping"
   sendAllInformation(client);
 }
 
@@ -207,18 +190,12 @@ void sendAllInformation(WiFiClient client){
   sendClientInfo("BackSide", String(voltInputBackside), client);
   sendClientInfo("BottlePressure", String(voltInputBottle), client);
   sendClientInfo("BatteryLevel", String(voltInputBattery), client);
-  
-  // sendClientInfo("PinInStatus", String(digitalRead(PIN_IN_STATUS)), client);
-  // sendClientInfo("PinOutStatus", String(digitalRead(PIN_OUT_STATUS)), client);
-  // sendClientInfo("BallHomeStatus", String(digitalRead(BALL_HOME_STATUS)), client);
-  // sendClientInfo("BallLaunchedStatus", String(digitalRead(BALL_LAUNCHED_STATUS)), client);
-  // sendClientInfo("WiperStatus", String(digitalRead(WIPER_STATUS)), client);
 
-  // sendClientInfo("BatteryStatus100", String(digitalRead(BATTERY100)), client);
-  // sendClientInfo("BatteryStatus80", String(digitalRead(BATTERY80)), client);
-  // sendClientInfo("BatteryStatus60", String(digitalRead(BATTERY60)), client);
-  // sendClientInfo("BatteryStatus40", String(digitalRead(BATTERY40)), client);
-  // sendClientInfo("BatteryStatus20", String(digitalRead(BATTERY20)), client);
+  sendClientInfo("PinInStatus", String(digitalRead(PIN_IN_STATUS)), client);
+  sendClientInfo("PinOutStatus", String(digitalRead(PIN_OUT_STATUS)), client);
+  sendClientInfo("BallHomeStatus", String(digitalRead(BALL_HOME_STATUS)), client);
+  sendClientInfo("BallLaunchedStatus", String(digitalRead(BALL_LAUNCHED_STATUS)), client);
+  sendClientInfo("WiperStatus", String(digitalRead(WIPER_STATUS)), client);
 
   client.print("Info Tag");
 }
