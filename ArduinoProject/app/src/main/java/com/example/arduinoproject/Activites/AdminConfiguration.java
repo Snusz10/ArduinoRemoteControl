@@ -8,6 +8,7 @@
  * Version || Author || Date        || Comment
  * =================================================================================================
  * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
+ * 1.0.1   || Mathew || 2024-11-19  || Fix NPEs on startup due to saved values not being present
  * =================================================================================================
  */
 
@@ -37,7 +38,7 @@ public class AdminConfiguration extends AppCompatActivity {
 
     WebView webView;
 
-    static public Float scaleFactor = 1.0f;
+    static public Float scaleFactor = null;
 
 
     static public Float batteryVoltage100 = null;
@@ -60,7 +61,7 @@ public class AdminConfiguration extends AppCompatActivity {
         versionTextView.setText("Version: " + MainActivity.version);
 
         EditText editText = findViewById(R.id.admin_configuration_scale_factor);
-        editText.setText(scaleFactor.toString());
+        editText.setText(scaleFactor == null ? null : scaleFactor.toString());
 
         EditText voltage100EditText = findViewById(R.id.admin_configuration_voltage_100);
         voltage100EditText.setText(batteryVoltage100 == null ? null : batteryVoltage100.toString());
@@ -77,7 +78,7 @@ public class AdminConfiguration extends AppCompatActivity {
         bleedButtonCheckbox.setChecked(bleedButtonOverride);
 
         TextView batteryVoltageTextView = findViewById(R.id.admin_configuration_current_voltage);
-        batteryVoltageTextView.setText("Current Voltage: " + MainActivity.batteryVoltage.toString());
+        batteryVoltageTextView.setText("Current Voltage: " + (MainActivity.batteryVoltage == null ? "" : MainActivity.batteryVoltage.toString()));
 
         textWatcher(editText, "scaleFactor");
         textWatcher(voltage100EditText, "battery100");

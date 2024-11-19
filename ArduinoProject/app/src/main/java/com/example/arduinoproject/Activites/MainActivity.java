@@ -6,6 +6,7 @@
  * Version || Author || Date        || Comment
  * =================================================================================================
  * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
+ * 1.0.1   || Mathew || 2024-11-19  || Fix NPEs on startup due to saved values not being present
  * =================================================================================================
  */
 
@@ -56,7 +57,7 @@ import java.util.Map;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity {
 
-    public static String version = "1.0.0";
+    public static String version = "1.0.1";
 
     // get all of the status text fragments and name them
     FragmentManager fm;
@@ -425,7 +426,9 @@ public class MainActivity extends AppCompatActivity {
             myNum = 0.0f;
         }
 
-        myNum = myNum * AdminConfiguration.scaleFactor;
+        if (AdminConfiguration.scaleFactor != null){
+            myNum = myNum * AdminConfiguration.scaleFactor;
+        }
 
         float conversionFactor = 1223f; // scales up the voltage reading to a pressure reading
         return (myNum) * conversionFactor;
