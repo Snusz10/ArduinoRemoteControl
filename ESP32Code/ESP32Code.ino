@@ -5,6 +5,7 @@
  * Version || Author || Date        || Comment
  * =================================================================================================
  * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
+ * 1.0.1   || Mathew || 2024-11-23  || Changed the battery level pin from 13 to 32 so that it can read analog values properly
  * =================================================================================================
  */
 
@@ -18,13 +19,13 @@
 #define BACKSIDE_PRESSURE 35
 #define BOTTLE_PRESSURE 34
 
-#define PIN_IN_STATUS 32
-#define PIN_OUT_STATUS 33
-#define BALL_HOME_STATUS 22
-#define BALL_LAUNCHED_STATUS 23
-#define WIPER_STATUS 25
+// #define PIN_IN_STATUS 32
+// #define PIN_OUT_STATUS 33
+// #define BALL_HOME_STATUS 22
+// #define BALL_LAUNCHED_STATUS 23
+// #define WIPER_STATUS 25
 
-#define BATTERY_LEVEL 13
+#define BATTERY_LEVEL 32
 
 
 // WiFi Definitions
@@ -73,11 +74,11 @@ void setup() {
   pinMode(BOTTLE_PRESSURE, INPUT);
 
   
-  pinMode(PIN_IN_STATUS, INPUT_PULLUP);
-  pinMode(PIN_OUT_STATUS, INPUT_PULLUP);
-  pinMode(BALL_HOME_STATUS, INPUT_PULLUP);
-  pinMode(BALL_LAUNCHED_STATUS, INPUT_PULLUP);
-  pinMode(WIPER_STATUS, INPUT_PULLUP);
+  // pinMode(PIN_IN_STATUS, INPUT_PULLUP);
+  // pinMode(PIN_OUT_STATUS, INPUT_PULLUP);
+  // pinMode(BALL_HOME_STATUS, INPUT_PULLUP);
+  // pinMode(BALL_LAUNCHED_STATUS, INPUT_PULLUP);
+  // pinMode(WIPER_STATUS, INPUT_PULLUP);
 
   pinMode(BATTERY_LEVEL, INPUT);
 
@@ -191,11 +192,11 @@ void sendAllInformation(WiFiClient client){
   sendClientInfo("BottlePressure", String(voltInputBottle), client);
   sendClientInfo("BatteryLevel", String(voltInputBattery), client);
 
-  sendClientInfo("PinInStatus", String(digitalRead(PIN_IN_STATUS)), client);
-  sendClientInfo("PinOutStatus", String(digitalRead(PIN_OUT_STATUS)), client);
-  sendClientInfo("BallHomeStatus", String(digitalRead(BALL_HOME_STATUS)), client);
-  sendClientInfo("BallLaunchedStatus", String(digitalRead(BALL_LAUNCHED_STATUS)), client);
-  sendClientInfo("WiperStatus", String(digitalRead(WIPER_STATUS)), client);
+  // sendClientInfo("PinInStatus", String(digitalRead(PIN_IN_STATUS)), client);
+  // sendClientInfo("PinOutStatus", String(digitalRead(PIN_OUT_STATUS)), client);
+  // sendClientInfo("BallHomeStatus", String(digitalRead(BALL_HOME_STATUS)), client);
+  // sendClientInfo("BallLaunchedStatus", String(digitalRead(BALL_LAUNCHED_STATUS)), client);
+  // sendClientInfo("WiperStatus", String(digitalRead(WIPER_STATUS)), client);
 
   client.print("Info Tag");
 }

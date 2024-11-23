@@ -16,7 +16,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/round_button"
         android:text="Button"
-        android:textSize="22sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/circular_progress_bar"
         app:layout_constraintEnd_toEndOf="@+id/circular_progress_bar"
         app:layout_constraintStart_toStartOf="@+id/circular_progress_bar"

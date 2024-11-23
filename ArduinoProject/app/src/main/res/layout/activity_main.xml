@@ -23,7 +23,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="326dp">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/shutDownCircularButton"
@@ -31,6 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             tools:layout="@layout/circular_button" />
     </LinearLayout>
 
@@ -166,6 +168,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             tools:layout="@layout/circular_button" />
 
         <androidx.fragment.app.FragmentContainerView
@@ -174,6 +178,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
             tools:layout="@layout/circular_button" />
     </LinearLayout>
 

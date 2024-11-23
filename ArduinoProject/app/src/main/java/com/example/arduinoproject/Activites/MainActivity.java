@@ -7,6 +7,7 @@
  * =================================================================================================
  * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
  * 1.0.1   || Mathew || 2024-11-19  || Fix NPEs on startup due to saved values not being present
+ * 1.0.2   || Mathew || 2024-11-23  || Resized the circular button fragments (pin/ball/shut down) to better fit the smaller tablet's screen size
  * =================================================================================================
  */
 
@@ -27,6 +28,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -441,8 +443,6 @@ public class MainActivity extends AppCompatActivity {
             String[] individualMessageParts = individualMessages[i].split("`");
             String description = individualMessageParts[0];
             String info = individualMessageParts[1];
-
-            boolean previousBatteryStatus;
 
             // handle the messages based on their descriptions
             switch(description){
