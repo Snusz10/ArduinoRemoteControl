@@ -8,6 +8,7 @@
  * 1.0.0   || Mathew || 2024-11-16  || Initial Creation
  * 1.0.1   || Mathew || 2024-11-19  || Fix NPEs on startup due to saved values not being present
  * 1.0.2   || Mathew || 2024-11-23  || Resized the circular button fragments (pin/ball/shut down) to better fit the smaller tablet's screen size
+ * 1.0.3   || Mathew || 2025-01-13  || The bleed button needs to be CURRENTLY pressed, not just pressed once before, in order for the pin-release button to be enabled
  * =================================================================================================
  */
 
@@ -59,7 +60,7 @@ import java.util.Map;
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity {
 
-    public static String version = "1.0.1";
+    public static String version = "1.0.3";
 
     // get all of the status text fragments and name them
     FragmentManager fm;
@@ -331,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean bleedButtonLockout = false;
-    private boolean bleedButtonPressedOnce = false;
+    private boolean bleedButtonPressedCurrently = false;
     private boolean bleedButtonPressed(View view, MotionEvent event) {
         if (chargeButton.isPressed() || bleedButtonLockout){
             return true;
@@ -340,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
             case MotionEvent.ACTION_DOWN:
                 bleedButton.setBackgroundColor(darkGray);
                 sendSignal("bleed", "true");
-                bleedButtonPressedOnce = true;
+                bleedButtonPressedCurrently = true;
                 return true;
             case MotionEvent.ACTION_UP:
                 bleedButton.setBackgroundColor(deepGray);
@@ -358,6 +359,7 @@ public class MainActivity extends AppCompatActivity {
             case MotionEvent.ACTION_DOWN:
                 chargeButton.setBackgroundColor(darkGray);
                 sendSignal("bleed", "false");
+                bleedButtonPressedCurrently = false;
                 sendSignal("charge", "true");
                 return true;
             case MotionEvent.ACTION_UP:
@@ -665,7 +667,7 @@ public class MainActivity extends AppCompatActivity {
                     || AdminConfiguration.bleedButtonOverride){
                     pinCircularButton.allowEnabling();
                     ballCircularButton.allowEnabling();
-                    pinCircularButton.setEnabled(connectedToArduino && bleedButtonPressedOnce);
+                    pinCircularButton.setEnabled(connectedToArduino && bleedButtonPressedCurrently);
                     ballCircularButton.setEnabled(connectedToArduino && ballCircularButtonCanBeEnabled);
                 }else{
                     pinCircularButton.disallowEnabling();
